@@ -44,6 +44,9 @@
                         <a class="nav-link" href="{% url 'posts' %}">Посты</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Вход</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'homework2' %}">Домашнее задание №2</a>
                     </li>
                     <li class="nav-item dropdown">
@@ -52,8 +55,10 @@
                             Ещё
                         </a>
                         <ul class="dropdown-menu">
+                            {% if user.is_authenticated %}
                             <li><a class="dropdown-item" href="{% url 'create_post' %}">Создать пост</a></li>
                             <li><a class="dropdown-item" href="{% url 'create_category' %}">Создать категорию </a></li>
+                            {% endif %}
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
@@ -61,6 +66,16 @@
                 </ul>
                 
                 <!-- Поисковая форма -->
+                 {% if user.is_authenticated %}
+                 <div class = "d-flex align-items-center me-3">
+                    <span class = "text-light">
+                        {{user.username}}
+                    </span>
+                 </div>
+                <a class="btn btn-outline-danger btn-sm" href="{% url 'logout' %}">
+                    Выход
+                </a>                 
+                {% endif %}
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" 
                            type="search" 

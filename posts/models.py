@@ -21,7 +21,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to="posts", null=True, blank=True)
     category = models.ForeignKey(
-        "Category", null=True, blank=True, on_delete=models.SET_NULL
+        "Category", null=True, blank=True, on_delete=models.SET_NULL,related_name="posts",
     )
 
     tags = models.ManyToManyField(Tag, null=True, blank=True)

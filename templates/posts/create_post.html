@@ -67,6 +67,22 @@
                         </div>
                         {% endif %}
 
+                        <div class="mb-3">
+                            <label for="tags" class="form-label">Тег</label>
+                            
+                            <input 
+                                type="text"
+                                class="form-control"
+                                id="tags"
+                                name="tags"
+                                placeholder="Например: Django, Python, Новости"
+                                value="{{ tags }}"
+                            >
+
+                            <div class="form-text">
+                                Введите тег для поста
+                            </div>
+                        </div>
                         <!-- Submit -->
                         <button type="submit" class="btn btn-primary w-100">
                             Создать пост

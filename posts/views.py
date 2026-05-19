@@ -1,9 +1,9 @@
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from posts.form import PostForm, TestForm, CategoryForm, CatForm
-from posts.models import Category, Post
+from posts.models import Category, Post, Tag
 from posts.posts import get_posts_filter_by_rate
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def home(request):
     return render(request, "base.html")
@@ -22,11 +22,12 @@ def homework2(request):
     return render(request, template_name="posts/posts.html", context={"posts": posts})
 
 def get_posts_by_category(request, id):
-    posts = Post.objects.filter(category_id=id)
+    category = Category.objects.filter(id = id).first()
+    posts = category.posts.all()
 
-    return render(request, template_name="posts/posts.html", context={"posts": posts})
+    return render(request, template_name="posts/posts.html", context={"posts": posts, "category":category})
 
-
+@login_required
 def create_post(request: HttpRequest):
 
     if request.method == "POST":
@@ -34,14 +35,28 @@ def create_post(request: HttpRequest):
 
         if form.is_valid():
             cleaned_data = form.cleaned_data
+            tags = form.cleaned_data["tags"].split(" ")
+            tag_objects = []
+            tags_first = Tag.objects.all()
 
-            Post.objects.create(
+            for tag in tags:
+                if not tags_first.filter(title=tag).exists():
+                    tag_objects.append(Tag(title=tag))
+
+            if tag_objects:
+                Tag.objects.bulk_create(tag_objects)
+
+            post = Post.objects.create(
                 title=cleaned_data["title"],
                 content=cleaned_data["content"],
                 rate=cleaned_data["rate"],
                 image=cleaned_data["image"],
                 category_id=cleaned_data["category"],
+                user = request.user,
             )
+            created_tags = Tag.objects.filter(title__in=tags)
+            post.tags.add(*created_tags)
+        
 
             return redirect("posts")
 

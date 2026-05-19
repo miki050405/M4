@@ -29,6 +29,10 @@ from posts.views import (
     homework2,
     create_category,
 )
+from users.views import (
+    login_user,
+    logout_user,
+)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name = 'home'),
@@ -40,6 +44,8 @@ urlpatterns = [
     path("posts/<int:pk>/edit/", edit_post, name="edit_post"),
     path("posts/<int:id>/delete", delete_post, name="delete_post"),
     path("categories/create/", create_category, name = 'create_category'),
+    path("user/login/",login_user,name="login"),
+    path("user/logout/",logout_user,name="logout"),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
