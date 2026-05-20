@@ -32,6 +32,7 @@ from posts.views import (
 from users.views import (
     login_user,
     logout_user,
+    CreateUserView,
 )
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -46,6 +47,6 @@ urlpatterns = [
     path("categories/create/", create_category, name = 'create_category'),
     path("user/login/",login_user,name="login"),
     path("user/logout/",logout_user,name="logout"),
-
+    path("user/register/", CreateUserView, name="register"),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
