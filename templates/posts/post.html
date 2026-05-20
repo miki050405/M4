@@ -60,6 +60,10 @@
                             ⭐ Рейтинг: <strong>{{ post.rate }}</strong>
                         </p>
                     {% endif %}
+                    <p class="mt-3">
+                        Просмотры: <strong>{{ post.view_count }}</strong>
+                    </p>
+
                     {% if post.user %}
                     <p class="mt-3">
                         Пользователь: <strong>{{ post.user.username }}</strong>
@@ -72,6 +76,75 @@
                     <a href="{% url 'posts' %}" class="btn btn-outline-secondary">
                         ← Назад к постам
                     </a>
+                </div>
+
+            </div>
+
+<!-- БЛОК КОММЕНТАРИЕВ -->
+
+            <div class="card shadow-sm mt-4">
+
+                <div class="card-body">
+
+                    <h4 class="mb-4">Комментарии</h4>
+
+                    <!-- ФОРМА -->
+
+                    <form method="post" class="mb-4" action="{% url 'create_comment' post.id %}">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Текст комментария</label>
+
+                            <textarea 
+                                name="text"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Напишите комментарий..."
+                                required
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            Отправить
+                        </button>
+                    </form>
+
+                    <!-- СПИСОК КОММЕНТАРИЕВ -->
+
+                    {% if post.comments.all %}
+                        
+                        {% for comment in post.comments.all %}
+                            
+                            <div class="border rounded p-3 mb-3">
+
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    
+                                    <strong>
+                                        {% if comment.user %}
+                                            {{ comment.user.username }}
+                                        {% else %}
+                                            Аноним
+                                        {% endif %}
+                                    </strong>
+                                </div>
+
+                                <p class="mb-0">
+                                    {{ comment.text }}
+                                </p>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="text-muted">
+                            Комментариев пока нет.
+                        </p>
+
+                    {% endif %}
+
                 </div>
 
             </div>

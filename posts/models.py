@@ -20,6 +20,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to="posts", null=True, blank=True)
+    view_count = models.IntegerField(default=0)
     category = models.ForeignKey(
         "Category", null=True, blank=True, on_delete=models.SET_NULL,related_name="posts",
     )
@@ -42,3 +43,11 @@ class Category(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}"
+    
+class Comment(models.Model):
+    text = models.TextField()
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self) -> str:
+        return f"{self.text[:5]} - {self.user}"
